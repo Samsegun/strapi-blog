@@ -18,10 +18,6 @@
       "unique": true,
       "minLength": 3
     },
-    "Date": {
-      "type": "date",
-      "required": true
-    },
     "Authors": {
       "type": "relation",
       "relation": "oneToMany",
@@ -35,15 +31,24 @@
         "images"
       ]
     },
-    "SeoDescription": {
-      "type": "string"
-    },
-    "SeoTitle": {
-      "type": "string"
-    },
     "Content": {
       "type": "richtext",
       "required": true
+    },
+    "PostSEO": {
+      "type": "component",
+      "repeatable": false,
+      "component": "seo.seo-information"
+    },
+    "Slug": {
+      "type": "uid",
+      "targetField": "Title",
+      "required": true
+    },
+    "Tags": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::tag.tag"
     }
   }
 }

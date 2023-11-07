@@ -380,12 +380,12 @@ export interface ApiPostPost extends Schema.CollectionType {
       Attribute.SetMinMaxLength<{
         minLength: 3;
       }>;
-    Date: Attribute.Date & Attribute.Required;
     Authors: Attribute.Relation<'api::post.post', 'oneToMany', 'admin::user'>;
     Cover: Attribute.Media;
-    SeoDescription: Attribute.String;
-    SeoTitle: Attribute.String;
     Content: Attribute.RichText & Attribute.Required;
+    PostSEO: Attribute.Component<'seo.seo-information'>;
+    Slug: Attribute.UID<'api::post.post', 'Title'> & Attribute.Required;
+    Tags: Attribute.Relation<'api::post.post', 'oneToMany', 'api::tag.tag'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -396,39 +396,24 @@ export interface ApiPostPost extends Schema.CollectionType {
   };
 }
 
-export interface ApiReviewReview extends Schema.CollectionType {
-  collectionName: 'reviews';
+export interface ApiTagTag extends Schema.CollectionType {
+  collectionName: 'tags';
   info: {
-    singularName: 'review';
-    pluralName: 'reviews';
-    displayName: 'review';
+    singularName: 'tag';
+    pluralName: 'tags';
+    displayName: 'Tag';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
-    title: Attribute.String & Attribute.Required & Attribute.Unique;
-    rating: Attribute.Integer &
-      Attribute.Required &
-      Attribute.SetMinMax<{
-        min: 1;
-        max: 10;
-      }>;
-    body: Attribute.RichText & Attribute.Required;
+    Name: Attribute.String & Attribute.Required & Attribute.Unique;
+    Slug: Attribute.UID<'api::tag.tag', 'Name'> & Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::review.review',
-      'oneToOne',
-      'admin::user'
-    > &
+    createdBy: Attribute.Relation<'api::tag.tag', 'oneToOne', 'admin::user'> &
       Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::review.review',
-      'oneToOne',
-      'admin::user'
-    > &
+    updatedBy: Attribute.Relation<'api::tag.tag', 'oneToOne', 'admin::user'> &
       Attribute.Private;
   };
 }
@@ -759,7 +744,7 @@ declare module '@strapi/types' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'api::post.post': ApiPostPost;
-      'api::review.review': ApiReviewReview;
+      'api::tag.tag': ApiTagTag;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::i18n.locale': PluginI18NLocale;
